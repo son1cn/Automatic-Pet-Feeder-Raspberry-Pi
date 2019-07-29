@@ -1,3 +1,5 @@
+#info pulled from https://iotguider.in/raspberrypi/blinking-led-with-raspberry-pi/
+
 import RPi.GPIO as GPIO
 import time
 #using GPIO pin/channel 5 for blink test

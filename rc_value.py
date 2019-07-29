@@ -1,3 +1,5 @@
+#info pulled from https://iotguider.in/raspberrypi/interfacing-light-dependent-resistor-ldr-in-raspberry-pi/
+
 from gpiozero import LightSensor
 import time
 #setting up LightSensor on pin 4
