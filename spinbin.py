@@ -23,17 +23,24 @@ try:
     while True:
         print("LED turn on")
         pi.write(led_pin, 1)
-        time.sleep(1)
+#        time.sleep(1)
         print(ldr.value)
+	#if something is wrong with LDR it returns 0.0
+	if ldr.value == 0.0:
+	    print("you sohuldn't see this")
+	    ldr.close()
+	    time.sleep(1)
+	    ldr = LightSensor(4)
         #If LDR has higher than 0.8 (for my setup) move a bit before collecting LDR input
         if ldr.value > 0.8:
             print("moving away from light")
             #moves away from light in 0.1s increments of slowest servo movement
-            while ldr.value > 0.7:
+            while ldr.value > 0.8:
                 pi.set_servo_pulsewidth(servoPIN, CW)
                 time.sleep(0.1)
                 pi.set_servo_pulsewidth(servoPIN, STOP)
                 time.sleep(0.5)
+		print(ldr.value)
             print("final escape ldr ",ldr.value)
         print("starting servo")
         print("starting ldr ", ldr.value)
@@ -48,6 +55,7 @@ try:
         #turn off LED
         print("Motor stopped, LED Off")
         pi.write(led_pin, 0)
-        time.sleep(5)
+ #       time.sleep(5)
+	break
 except KeyboardInterrupt:
     pi.stop()
