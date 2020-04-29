@@ -21,43 +21,52 @@ ldr = LightSensor(4)
 
 def write_log(output):
     try:
-        with open('feeder_log', 'w') as outfile:
+        with open('feeder_log.csv', 'w') as outfile:
             outwrite = csv.writer(outfile)
             outwrite.writerow(datetime.now.strftime("%d/%m/%Y %H:%M:%S"),output)
+
+def write_debug_log(output):
+    try:
+        with open('feeder_debug_log.csv', 'w') as outfile:
+            outwrite = csv.writer(outfile)
+            outwrite.writerow(datetime.now.strftime("%d/%m/%Y %H:%M:%S"),output)
+            print(output)
+
 try:
     while True:
-        print("LED turn on")
+        write_debug_log("LED turn on")
+        #print("LED turn on")
         pi.write(led_pin, 1)
         print(ldr.value)
 	    #if something is wrong with LDR it returns 0.0
         if ldr.value == 0.0:
-            print("you shouldn't see this")
+            write_debug_log("you shouldn't see this")
             ldr.close()
             time.sleep(1)
             ldr = LightSensor(4)
         #If LDR has higher than 0.8 (for my setup) move a bit before collecting LDR input
         if ldr.value > 0.8:
-            print("moving away from light")
+            write_debug_log("moving away from light")
             #moves away from light in 0.1s increments of slowest servo movement
             while ldr.value > 0.8:
                 pi.set_servo_pulsewidth(servoPIN, CW)
                 time.sleep(0.1)
                 pi.set_servo_pulsewidth(servoPIN, STOP)
                 time.sleep(0.5)
-        print(ldr.value)
-        print("final escape ldr ",ldr.value)
-        print("starting servo")
-        print("starting ldr ", ldr.value)
+        write_debug_log(ldr.value)
+        write_debug_log("final escape ldr ",ldr.value)
+        write_debug_log("starting servo")
+        write_debug_log("starting ldr ", ldr.value)
         #while LDR is <0.8 continue to move in 0.1s increments of slowest servo speed
         while ldr.value < 0.8:
-            print("current LDR: " + str(ldr.value))
+            write_debug_log("current LDR: " + str(ldr.value))
             pi.set_servo_pulsewidth(servoPIN, CW)
             time.sleep(0.1)
             pi.set_servo_pulsewidth(servoPIN, STOP)
             time.sleep(0.2)
-        print("final ldr ",ldr.value)
+        write_debug_log("final ldr ",ldr.value)
         #turn off LED
-        print("Motor stopped, LED Off")
+        write_debug_log("Motor stopped, LED Off")
         pi.write(led_pin, 0)
         write_log("Fed")
         break
