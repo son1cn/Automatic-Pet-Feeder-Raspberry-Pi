@@ -24,6 +24,9 @@ def write_log(output):
         with open('feeder_log.csv', 'w') as outfile:
             outwrite = csv.writer(outfile)
             outwrite.writerow(datetime.now.strftime("%d/%m/%Y %H:%M:%S"),output)
+    except:
+        print("failure")
+    return
 
 def write_debug_log(output):
     try:
@@ -31,6 +34,9 @@ def write_debug_log(output):
             outwrite = csv.writer(outfile)
             outwrite.writerow(datetime.now.strftime("%d/%m/%Y %H:%M:%S"),output)
             print(output)
+    except:
+        print("failure")
+    return
 
 try:
     while True:
