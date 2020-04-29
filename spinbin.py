@@ -27,7 +27,7 @@ try:
         print(ldr.value)
 	#if something is wrong with LDR it returns 0.0
 	if ldr.value == 0.0:
-	    print("you sohuldn't see this")
+	    print("you shouldn't see this")
 	    ldr.close()
 	    time.sleep(1)
 	    ldr = LightSensor(4)
