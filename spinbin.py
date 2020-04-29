@@ -3,7 +3,8 @@
 #imports
 from gpiozero import LightSensor
 import pigpio
-import time, csv, datetime
+import time, csv
+from datetime import datetime
 
 #LED is connected to pin 5
 led_pin = 5
@@ -21,21 +22,23 @@ ldr = LightSensor(4)
 
 def write_log(output):
     try:
-        with open('feeder_log.csv', 'w') as outfile:
+        with open('feeder_log.csv', 'a') as outfile:
             outwrite = csv.writer(outfile)
-            outwrite.writerow(datetime.now.strftime("%d/%m/%Y %H:%M:%S"),output)
-    except:
-        print("failure")
+	    message = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"),output]
+            outwrite.writerow(message)
+    except Exception as e:
+        print(e)
     return
 
 def write_debug_log(output):
     try:
-        with open('feeder_debug_log.csv', 'w') as outfile:
+        with open('feeder_debug_log.csv', 'a') as outfile:
             outwrite = csv.writer(outfile)
-            outwrite.writerow(datetime.now.strftime("%d/%m/%Y %H:%M:%S"),output)
+	    message = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"),output]
+            outwrite.writerow(message) 
             print(output)
-    except:
-        print("failure")
+    except Exception as e:
+        print(e)
     return
 
 try:
@@ -60,9 +63,9 @@ try:
                 pi.set_servo_pulsewidth(servoPIN, STOP)
                 time.sleep(0.5)
         write_debug_log(ldr.value)
-        write_debug_log("final escape ldr ",ldr.value)
+        write_debug_log("final escape ldr " + str(ldr.value))
         write_debug_log("starting servo")
-        write_debug_log("starting ldr ", ldr.value)
+        write_debug_log("starting ldr " + str(ldr.value))
         #while LDR is <0.8 continue to move in 0.1s increments of slowest servo speed
         while ldr.value < 0.8:
             write_debug_log("current LDR: " + str(ldr.value))
@@ -70,7 +73,7 @@ try:
             time.sleep(0.1)
             pi.set_servo_pulsewidth(servoPIN, STOP)
             time.sleep(0.2)
-        write_debug_log("final ldr ",ldr.value)
+        write_debug_log("final ldr " + str(ldr.value))
         #turn off LED
         write_debug_log("Motor stopped, LED Off")
         pi.write(led_pin, 0)
