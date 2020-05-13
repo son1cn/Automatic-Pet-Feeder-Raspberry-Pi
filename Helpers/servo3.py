@@ -1,15 +1,10 @@
-import RPi.GPIO as GPIO  
+#This file uses different pulsewidths to find the value that corresponds to barely moving on a continuous servo on pin 13
+
+
 import pigpio
 import time  
 import signal  
-import atexit  
 
-#atexit.register(GPIO.cleanup)    
-
-#GPIO.setmode(GPIO.BCM)  
-#GPIO.setup(13, GPIO.OUT, initial=False)  
-#p = GPIO.PWM(13,50) #50HZ  
-#p.start(0)
 servo = pigpio.pi()
 servo.set_servo_pulsewidth(13, 1500)
 time.sleep(5)  

@@ -1,15 +1,9 @@
-import RPi.GPIO as GPIO  
+#Using pigpio library to try and interface with continuous servo
+
 import pigpio
 import time  
 import signal  
-import atexit  
 
-#atexit.register(GPIO.cleanup)    
-
-#GPIO.setmode(GPIO.BCM)  
-#GPIO.setup(13, GPIO.OUT, initial=False)  
-#p = GPIO.PWM(13,50) #50HZ  
-#p.start(0)
 servo = pigpio.pi()
 time.sleep(2)  
 

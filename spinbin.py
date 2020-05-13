@@ -20,11 +20,11 @@ pi = pigpio.pi()
 #All LDR values further down need to be calibrated for your setup
 ldr = LightSensor(4)
 
-def write_log(output):
+def write_log():
     try:
-        with open('feeder_log.csv', 'a') as outfile:
+        with open('feeder_log.csv', 'w') as outfile:
             outwrite = csv.writer(outfile)
-	    message = [datetime.now().strftime("%d/%m/%Y %H:%M:%S"),output]
+	    message = [datetime.now().strftime("%d/%m/%Y %H:%M:%S")]
             outwrite.writerow(message)
     except Exception as e:
         print(e)
@@ -77,7 +77,7 @@ try:
         #turn off LED
         write_debug_log("Motor stopped, LED Off")
         pi.write(led_pin, 0)
-        write_log("Fed")
+        write_log()
         break
 except KeyboardInterrupt:
     pi.stop()

@@ -1,3 +1,6 @@
+#This file was attempting to use RPi.GPIO libraries to interface with continuous servo. 
+#Didn't work as intended for my servo, I'd use servo3.py
+
 import RPi.GPIO as GPIO
 import time
 
