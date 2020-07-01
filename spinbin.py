@@ -56,12 +56,20 @@ try:
         #If LDR has higher than 0.8 (for my setup) move a bit before collecting LDR input
         if ldr.value > 0.8:
             write_debug_log("moving away from light")
+            #variable to catch LDR problems
+            catch = 0
             #moves away from light in 0.1s increments of slowest servo movement
             while ldr.value > 0.8:
-                pi.set_servo_pulsewidth(servoPIN, CW)
-                time.sleep(0.1)
-                pi.set_servo_pulsewidth(servoPIN, STOP)
-                time.sleep(0.5)
+            #catch problems with not seeing a reduction in LDR value within 5 steps
+                if catch > 4:
+                    write_debug_log("LDR not reducing")
+                    break
+                else:
+                    catch += 1
+                    pi.set_servo_pulsewidth(servoPIN, CW)
+                    time.sleep(0.1)
+                    pi.set_servo_pulsewidth(servoPIN, STOP)
+                    time.sleep(0.5)
         write_debug_log(ldr.value)
         write_debug_log("final escape ldr " + str(ldr.value))
         write_debug_log("starting servo")
